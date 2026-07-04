@@ -13,6 +13,7 @@ const attendanceRoutes = require('./routes/attendance.routes');
 const leaveRoutes = require('./routes/leave.routes');
 const payrollRoutes = require('./routes/payroll.routes');
 const dashboardRoutes = require('./routes/dashboard.routes');
+const setupSwagger = require('./config/swagger');
 
 const app = express();
 
@@ -38,6 +39,9 @@ app.use('/api/attendance', attendanceRoutes);
 app.use('/api/leaves', leaveRoutes);
 app.use('/api/payroll', payrollRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+
+// Mount Swagger REST API Docs
+setupSwagger(app);
 
 // Health Check Endpoint for MongoDB
 app.get('/api/health', (req, res) => {
