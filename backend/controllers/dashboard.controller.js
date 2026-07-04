@@ -19,7 +19,10 @@ const getTodayDateString = () => {
  */
 const getDashboardStats = async (req, res, next) => {
   try {
-    const todayStr = getTodayDateString();
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    const todayEnd = new Date();
+    todayEnd.setHours(23, 59, 59, 999);
 
     if (req.user.role === 'Admin') {
       // 1. Core counters
@@ -27,7 +30,7 @@ const getDashboardStats = async (req, res, next) => {
       const totalDepartments = await Department.countDocuments();
       const pendingLeaves = await LeaveRequest.countDocuments({ status: 'Pending' });
       const presentToday = await Attendance.countDocuments({
-        date: todayStr,
+        date: { $gte: todayStart, $lte: todayEnd },
         status: { $in: ['Present', 'Late', 'Half Day'] },
       });
 
@@ -84,8 +87,8 @@ const getDashboardStats = async (req, res, next) => {
           populate: { path: 'user_id', select: 'name email' },
         });
 
-      const recentAttendance = await Attendance.find({ date: todayStr })
-        .sort({ clocked_in: -1 })
+      const recentAttendance = await Attendance.find({ date: { $gte: todayStart, $lte: todayEnd } })
+        .sort({ check_in: -1 })
         .limit(5)
         .populate({
           path: 'employee_id',
@@ -134,7 +137,7 @@ const getDashboardStats = async (req, res, next) => {
       });
       const presentToday = await Attendance.countDocuments({
         employee_id: { $in: employeeIds },
-        date: todayStr,
+        date: { $gte: todayStart, $lte: todayEnd },
         status: { $in: ['Present', 'Late', 'Half Day'] },
       });
 
@@ -147,8 +150,8 @@ const getDashboardStats = async (req, res, next) => {
           populate: { path: 'user_id', select: 'name email' },
         });
 
-      const recentAttendance = await Attendance.find({ employee_id: { $in: employeeIds }, date: todayStr })
-        .sort({ clocked_in: -1 })
+      const recentAttendance = await Attendance.find({ employee_id: { $in: employeeIds }, date: { $gte: todayStart, $lte: todayEnd } })
+        .sort({ check_in: -1 })
         .limit(5)
         .populate({
           path: 'employee_id',
@@ -180,7 +183,7 @@ const getDashboardStats = async (req, res, next) => {
       // Today's Clock details
       const todayAttendance = await Attendance.findOne({
         employee_id: employee._id,
-        date: todayStr,
+        date: { $gte: todayStart, $lte: todayEnd },
       });
 
       // Attendance records summary (current calendar month)
@@ -248,10 +251,10 @@ const getDashboardStats = async (req, res, next) => {
         clockStatus: todayAttendance
           ? {
               status: 'clocked_out',
-              clocked_in: todayAttendance.clocked_in,
-              clocked_out: todayAttendance.clocked_out,
+              clocked_in: todayAttendance.check_in,
+              clocked_out: todayAttendance.check_out,
               canClockIn: false,
-              canClockOut: todayAttendance.clocked_out === null,
+              canClockOut: todayAttendance.check_out === null,
             }
           : {
               status: 'not_clocked_in',

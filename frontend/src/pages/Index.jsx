@@ -65,7 +65,7 @@ const Index = () => {
 
       {/* STICKY GLASSMORPHIC NAVBAR */}
       <nav className="sticky top-0 z-40 w-full bg-white/70 dark:bg-slate-900/70 backdrop-blur-md border-b border-slate-100 dark:border-slate-850/80 shadow-sm transition-colors duration-200">
-        <div className="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 py-4 sm:py-5 flex items-center justify-between">
           {/* Logo Brand */}
           <div className="flex items-center gap-2.5">
             <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-indigo-605 rounded-xl text-white flex items-center justify-center font-black text-sm shadow-md shadow-blue-500/10">

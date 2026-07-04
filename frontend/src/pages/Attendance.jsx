@@ -139,16 +139,16 @@ const Attendance = () => {
                     </td>
                   )}
                   <td className="px-6 py-4 font-semibold text-slate-600 dark:text-slate-400">
-                    {new Date(log.date + 'T00:00:00').toLocaleDateString()}
+                    {new Date(log.date).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
-                    {log.clocked_in ? new Date(log.clocked_in).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '-'}
+                    {log.check_in ? new Date(log.check_in).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '-'}
                   </td>
                   <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
-                    {log.clocked_out ? new Date(log.clocked_out).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '-'}
+                    {log.check_out ? new Date(log.check_out).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '-'}
                   </td>
                   <td className="px-6 py-4 text-slate-650 dark:text-slate-300 font-bold">
-                    {log.work_hours !== undefined ? `${log.work_hours.toFixed(1)} Hrs` : '-'}
+                    {log.working_hours !== undefined ? `${log.working_hours.toFixed(1)} Hrs` : '-'}
                   </td>
                   <td className="px-6 py-4">
                     <span className={`px-2 py-1 text-[10px] font-bold rounded-lg border ${statusStyles[log.status] || ''}`}>

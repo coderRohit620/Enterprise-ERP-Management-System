@@ -354,7 +354,7 @@ const Dashboard = () => {
                           </span>
                         </td>
                         <td className="py-3.5 text-slate-600 dark:text-slate-400 font-medium">
-                          {new Date(attendance.clocked_in).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                          {new Date(attendance.check_in).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </td>
                         <td className="py-3.5 text-right">
                           <span className={`px-2 py-1 text-[10px] font-bold rounded-lg ${attendanceStyles[attendance.status] || ''}`}>
