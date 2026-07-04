@@ -12,6 +12,7 @@ const departmentRoutes = require('./routes/department.routes');
 const attendanceRoutes = require('./routes/attendance.routes');
 const leaveRoutes = require('./routes/leave.routes');
 const payrollRoutes = require('./routes/payroll.routes');
+const dashboardRoutes = require('./routes/dashboard.routes');
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.use('/api/departments', departmentRoutes);
 app.use('/api/attendance', attendanceRoutes);
 app.use('/api/leaves', leaveRoutes);
 app.use('/api/payroll', payrollRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 // Health Check Endpoint for MongoDB
 app.get('/api/health', (req, res) => {
