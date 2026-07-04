@@ -1,27 +1,78 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './routes/ProtectedRoute';
+import RoleRoute from './routes/RoleRoute';
+import MainLayout from './layouts/MainLayout';
+import Login from './pages/Login';
+import Unauthorized from './pages/Unauthorized';
+import Dashboard from './pages/Dashboard';
+import Employees from './pages/Employees';
+import Departments from './pages/Departments';
+import Attendance from './pages/Attendance';
+import Leaves from './pages/Leaves';
+import Payroll from './pages/Payroll';
+import Profile from './pages/Profile';
 import { ToastContainer } from 'react-toastify';
 
+/**
+ * Root Application Router Container.
+ */
 function App() {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 p-4">
-      <div className="text-center p-8 bg-white dark:bg-slate-800 rounded-2xl shadow-xl max-w-md border border-slate-100 dark:border-slate-700">
-        <div className="w-16 h-16 bg-blue-600/10 dark:bg-blue-400/10 text-blue-600 dark:text-blue-400 rounded-2xl flex items-center justify-center mx-auto mb-5 font-bold text-2xl">
-          ERP
-        </div>
-        <h1 className="text-3xl font-bold mb-3 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
-          Enterprise ERP
-        </h1>
-        <p className="text-slate-600 dark:text-slate-400 mb-6 text-sm">
-          React, Vite, and Tailwind CSS frontend dependencies and base templates compiled successfully. Ready for full dashboard module implementation.
-        </p>
-        <button className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-medium rounded-xl transition-all duration-150 shadow-lg shadow-blue-600/20 dark:shadow-blue-500/10 active:scale-95">
-          Get Started
-        </button>
-      </div>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/unauthorized" element={<Unauthorized />} />
+
+          {/* Protected Client Session Wrapper */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <MainLayout />
+              </ProtectedRoute>
+            }
+          >
+            {/* Fallback to dashboard */}
+            <Route index element={<Navigate to="/dashboard" replace />} />
+            <Route path="dashboard" element={<Dashboard />} />
+
+            {/* Employee Management (Admin and Manager only) */}
+            <Route
+              path="employees"
+              element={
+                <RoleRoute allowedRoles={['Admin', 'Manager']}>
+                  <Employees />
+                </RoleRoute>
+              }
+            />
+
+            {/* Department logs (All authenticated) */}
+            <Route path="departments" element={<Departments />} />
+
+            {/* Attendance checks (All authenticated) */}
+            <Route path="attendance" element={<Attendance />} />
+
+            {/* Leaves allocations (All authenticated) */}
+            <Route path="leaves" element={<Leaves />} />
+
+            {/* Payroll lists (All authenticated) */}
+            <Route path="payroll" element={<Payroll />} />
+
+            {/* User profile (All authenticated) */}
+            <Route path="profile" element={<Profile />} />
+          </Route>
+
+          {/* Global Fallback redirect */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Router>
       <ToastContainer position="top-right" autoClose={3000} theme="colored" />
-    </div>
+    </AuthProvider>
   );
 }
 
 export default App;
-// For future routing updates, we will wrap this with Router DOM components.
