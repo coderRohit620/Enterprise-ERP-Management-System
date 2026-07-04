@@ -5,6 +5,9 @@ const morgan = require('morgan');
 const path = require('path');
 const mongoose = require('mongoose');
 
+// Route Imports
+const authRoutes = require('./routes/auth.routes');
+
 const app = express();
 
 // Security Middlewares
@@ -20,6 +23,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // Serve Static Uploads folder
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// API Routes
+app.use('/api/auth', authRoutes);
 
 // Health Check Endpoint for MongoDB
 app.get('/api/health', (req, res) => {
