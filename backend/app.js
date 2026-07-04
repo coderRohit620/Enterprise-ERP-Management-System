@@ -9,6 +9,9 @@ const mongoose = require('mongoose');
 const authRoutes = require('./routes/auth.routes');
 const employeeRoutes = require('./routes/employee.routes');
 const departmentRoutes = require('./routes/department.routes');
+const attendanceRoutes = require('./routes/attendance.routes');
+const leaveRoutes = require('./routes/leave.routes');
+const payrollRoutes = require('./routes/payroll.routes');
 
 const app = express();
 
@@ -30,6 +33,9 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/auth', authRoutes);
 app.use('/api/employees', employeeRoutes);
 app.use('/api/departments', departmentRoutes);
+app.use('/api/attendance', attendanceRoutes);
+app.use('/api/leaves', leaveRoutes);
+app.use('/api/payroll', payrollRoutes);
 
 // Health Check Endpoint for MongoDB
 app.get('/api/health', (req, res) => {

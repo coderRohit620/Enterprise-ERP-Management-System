@@ -37,6 +37,11 @@ const PayrollSchema = new mongoose.Schema(
       default: 0,
       min: [0, 'Tax cannot be negative'],
     },
+    pf: {
+      type: Number,
+      default: 0,
+      min: [0, 'PF cannot be negative'],
+    },
     net_salary: {
       type: Number,
       required: [true, 'Net salary is required'],
