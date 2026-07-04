@@ -4,6 +4,7 @@ import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './routes/ProtectedRoute';
 import RoleRoute from './routes/RoleRoute';
 import MainLayout from './layouts/MainLayout';
+import Index from './pages/Index';
 import Login from './pages/Login';
 import Unauthorized from './pages/Unauthorized';
 import Dashboard from './pages/Dashboard';
@@ -24,25 +25,24 @@ function App() {
       <Router>
         <Routes>
           {/* Public Routes */}
+          <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
 
-          {/* Protected Client Session Wrapper */}
+          {/* Protected Client Session Layout Route */}
           <Route
-            path="/"
             element={
               <ProtectedRoute>
                 <MainLayout />
               </ProtectedRoute>
             }
           >
-            {/* Fallback to dashboard */}
-            <Route index element={<Navigate to="/dashboard" replace />} />
-            <Route path="dashboard" element={<Dashboard />} />
+            {/* Dashboard (All Authenticated roles) */}
+            <Route path="/dashboard" element={<Dashboard />} />
 
             {/* Employee Management (Admin and Manager only) */}
             <Route
-              path="employees"
+              path="/employees"
               element={
                 <RoleRoute allowedRoles={['Admin', 'Manager']}>
                   <Employees />
@@ -51,19 +51,19 @@ function App() {
             />
 
             {/* Department logs (All authenticated) */}
-            <Route path="departments" element={<Departments />} />
+            <Route path="/departments" element={<Departments />} />
 
             {/* Attendance checks (All authenticated) */}
-            <Route path="attendance" element={<Attendance />} />
+            <Route path="/attendance" element={<Attendance />} />
 
             {/* Leaves allocations (All authenticated) */}
-            <Route path="leaves" element={<Leaves />} />
+            <Route path="/leaves" element={<Leaves />} />
 
             {/* Payroll lists (All authenticated) */}
-            <Route path="payroll" element={<Payroll />} />
+            <Route path="/payroll" element={<Payroll />} />
 
             {/* User profile (All authenticated) */}
-            <Route path="profile" element={<Profile />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
 
           {/* Global Fallback redirect */}
