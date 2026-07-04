@@ -7,6 +7,8 @@ const mongoose = require('mongoose');
 
 // Route Imports
 const authRoutes = require('./routes/auth.routes');
+const employeeRoutes = require('./routes/employee.routes');
+const departmentRoutes = require('./routes/department.routes');
 
 const app = express();
 
@@ -26,6 +28,8 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // API Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/employees', employeeRoutes);
+app.use('/api/departments', departmentRoutes);
 
 // Health Check Endpoint for MongoDB
 app.get('/api/health', (req, res) => {
