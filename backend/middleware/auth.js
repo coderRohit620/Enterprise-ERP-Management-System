@@ -35,4 +35,24 @@ const protect = async (req, res, next) => {
   }
 };
 
-module.exports = { protect };
+/**
+ * Authorize roles - Restricts access to specific user roles
+ * @param {...string} roles - List of allowed roles ('Admin', 'Manager', 'Employee')
+ */
+const authorize = (...roles) => {
+  return (req, res, next) => {
+    if (!req.user) {
+      return res.status(401).json({ error: 'Not authorized, user credentials missing' });
+    }
+
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({
+        error: `Access Denied: Role '${req.user.role}' is not authorized to access this resource`
+      });
+    }
+
+    return next();
+  };
+};
+
+module.exports = { protect, authorize };
